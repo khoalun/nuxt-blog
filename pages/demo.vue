@@ -2,8 +2,8 @@
 const variant = ref("default");
 const size = ref("");
 const loading = ref(false);
-const position = ref("left")
-const content = ref("Content Example")
+const position = ref("left");
+const content = ref("Content Example");
 </script>
 
 <template>
@@ -91,7 +91,7 @@ const content = ref("Content Example")
           >
         </div>
       </form>
-      
+
       <form>
         <h3>Button Loading Position</h3>
         <div class="flex items-center">
@@ -129,15 +129,11 @@ const content = ref("Content Example")
       </form>
       <form>
         <label
-            for="default-radio-2"
-            class="ms-2 text-sm font-medium text-gray-900 mb-0"
-            >Button Content</label
-          >
-        <input
-            v-model="content"
-            class="w-[300px]"
-          />
-          
+          for="default-radio-2"
+          class="ms-2 text-sm font-medium text-gray-900 mb-0"
+          >Button Content</label
+        >
+        <input v-model="content" class="w-[300px]" />
       </form>
       <hr />
       <SharedButton
@@ -146,7 +142,17 @@ const content = ref("Content Example")
         v-bind:size="size"
         v-bind:loadingPos="position"
         v-on:click="() => console.log('Hello')"
-        disabled
+        data-name="Custom Data Name"
+        >{{ content }}</SharedButton
+      >
+      <SharedButton
+        as="a"
+        href="/"
+        v-bind:loading="loading"
+        v-bind:variant="variant"
+        v-bind:size="size"
+        v-bind:loadingPos="position"
+        v-on:click="() => alert('Move to home page')"
         data-name="Custom Data Name"
         >{{ content }}</SharedButton
       >

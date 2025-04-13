@@ -1,27 +1,33 @@
 <script setup lang="ts">
 type Props = {
+  as?: "button" | "a";
   variant?: "default" | "category" | "primary";
   size?: "large";
   loading?: boolean;
   loadingPos?: "left" | "right";
 };
 const props = defineProps<Props>();
-const size = toRef(() => props.size)
-const variant = toRef(() => props.variant || 'default')
-const position = toRef(() => props.loadingPos || 'left')
-
+const position = computed(() => props.loadingPos || "left");
+const classes = computed(() => {
+  const variant = props.variant || "default";
+  const size = props.size || "default";
+  return {
+    btn: true,
+    "btn-default": variant === "default",
+    "btn-category": variant === "category",
+    "btn-primary": variant === "primary",
+    "btn-size-large": size === "large",
+  };
+});
 </script>
 
 <template>
-  <button
-    class="btn"
-    v-bind:class="{
-      'btn-default': variant === 'default',
-      'btn-category': variant === 'category',
-      'btn-primary': variant === 'primary',
-      'btn-size-large': size === 'large',
-    }"
-  >
+  <NuxtLink v-if="props.as === 'a'" v-bind:class="classes">
+    <SharedIconLoading v-if="loading && position === 'left'" />
+    <slot></slot>
+    <SharedIconLoading v-if="loading && position === 'right'" />
+  </NuxtLink>
+  <button v-else v-bind:class="classes">
     <SharedIconLoading v-if="loading && position === 'left'" />
     <slot></slot>
     <SharedIconLoading v-if="loading && position === 'right'" />
