@@ -1,5 +1,11 @@
+<script setup>
+</script>
+
 <template>
-  <div>
-    <p class="my-3">Test Tailwind</p>
+  <div class="wrapper-content">
+    <Header />
+    <NuxtPage />
+    <Footer />
   </div>
 </template>
+
