@@ -10,3 +10,18 @@ export type ArticleItem = {
     }
     createdAt: Date
 }
+
+export type ArticleItemApi = {
+    id: number
+    title: {
+        rendered: string
+    }
+    featured_media_url: string
+    slug: string
+    author: number
+    author_data: {
+        avatar: string
+        nickname: string
+    }
+    date: string
+}
