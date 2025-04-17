@@ -9,6 +9,15 @@ const content = ref("Content Example");
 <template>
   <div class="tcl-container py-10">
     <div class="border border-solid border-[#ddd] p-3">
+      <h1>Component Main Title</h1>
+      <SharedMainTitle>
+        Bai Viet Moi Nhat
+      </SharedMainTitle>
+      <SharedMainTitle>
+        Bai Viet Gan Day
+      </SharedMainTitle>
+    </div>
+    <div class="border border-solid border-[#ddd] p-3">
       <h1>Component Button</h1>
       <form>
         <h3>Button Variant</h3>
