@@ -15,12 +15,6 @@ const articles = ref<ArticleItem[]>(data.value || []);
         <div v-for="item in articles" :key="item.id" class="latest-news__card">
           <SharedArticleItem v-bind:article="item" />
         </div>
-        <!-- <div class="latest-news__card">
-                    <SharedArticleItem></SharedArticleItem>
-                </div>
-                <div class="latest-news__card">
-                    <SharedArticleItem></SharedArticleItem>
-                </div> -->
       </div>
     </div>
   </div>

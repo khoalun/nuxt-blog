@@ -1,76 +1,93 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
-import dayjsVi from 'dayjs/locale/vi'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import dayjsVi from "dayjs/locale/vi";
+import relativeTime from "dayjs/plugin/relativeTime";
 import type { ArticleItem } from "~/types";
 
-dayjs.locale(dayjsVi)
-dayjs.extend(relativeTime)
+dayjs.locale(dayjsVi);
+dayjs.extend(relativeTime);
 
 type Props = {
   article?: ArticleItem;
+  isCard?: boolean
+  isRow?: boolean
+  isShowAvatar?: boolean
+  isShowCategories?: boolean
+  isShowDescription?: boolean
 };
-const props = defineProps<Props>();
+
+const props = withDefaults(defineProps<Props>(), {
+  isShowAvatar: true
+});
 const article = toRef(props.article);
+const isShowAvatar = toRef(props.isShowAvatar ?? true)
 
 const createdAt = computed(() => {
-  if (!article.value) return {
-    formatted: '',
-    relativeFormatted: ''
-  }
-  const date = dayjs(article.value.createdAt)
+  if (!article.value)
+    return {
+      formatted: "",
+      relativeFormatted: "",
+    };
+  const date = dayjs(article.value.createdAt);
   return {
     formatted: date.format("MMM DD, YYYY"),
-    relativeFormatted: date.fromNow()
-  }
+    relativeFormatted: date.fromNow(),
+  };
 });
 
+const classes = computed(() => {
+  return {
+    "article-item": true,
+    "style-row": props.isRow,
+    "style-card": props.isCard,
+  };
+});
 </script>
 
 <template>
-  <article v-if="article" class="article-item">
+  <article v-if="article" v-bind:class="classes">
     <div class="article-item__thumbnail">
       <NuxtLink :href="article.slug">
         <img :src="article.thumbnail" :alt="article.title" />
       </NuxtLink>
     </div>
+    <!-- v-for="item in articles" :key="item.id" -->
     <div class="article-item__content">
+      <ul v-if="props.isShowCategories" class="article-item__categories">
+        <li v-for="item in article.categories" :key="item.id">
+          <SharedButton :href="item.slug">{{ item.title }}
+          </SharedButton>
+        </li>
+      </ul>
+      <ul v-if="props.isShowCategories" class="article-item__stats">
+        <li>
+          <i class="icons ion-ios-eye"></i>
+          <span class="text">{{ article.viewCount }}</span>
+        </li>
+      </ul>
       <h2 class="article-item__title">
         <NuxtLink :href="article.slug">{{ article.title }}</NuxtLink>
       </h2>
+      <p v-if="props.isShowDescription" class="article-item__desc">{{ article.description }}</p>
       <div class="article-item__info">
-        <div class="article-item__author-image">
-          <NuxtLink
-            v-bind:aria-label="article.author.fullName"
-            :href="article.author.slug"
-          >
+        <div v-if="isShowAvatar" class="article-item__author-image">
+          <NuxtLink v-bind:aria-label="article.author.fullName" :href="article.author.slug">
             <img :src="article.author.avatar" :alt="article.author.fullName" />
           </NuxtLink>
         </div>
         <div class="article-item__info-right">
           <div class="article-item__author-name">
-            <NuxtLink
-              v-bind:aria-label="article.author.fullName"
-              :href="article.author.slug"
-              ><strong>{{ article.author.fullName }}</strong></NuxtLink
-            >
+            <NuxtLink v-bind:aria-label="article.author.fullName" :href="article.author.slug"><strong>{{
+              article.author.fullName }}</strong></NuxtLink>
           </div>
           <div class="article-item__datetime">
             <div class="date">{{ createdAt.formatted }}</div>
             <div class="time">
-              <svg
-                stroke="currentColor"
-                fill="currentColor"
-                stroke-width="0"
-                viewBox="0 0 512 512"
-                class="css-uk6cul"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="css-uk6cul"
+                height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                 <path
-                  d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"
-                ></path>
+                  d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z">
+                </path>
               </svg>
               {{ createdAt.relativeFormatted }}
             </div>
@@ -82,7 +99,7 @@ const createdAt = computed(() => {
 </template>
 
 <style scoped>
-.articles-list .tcl-row > [class^="tcl-col-"] {
+.articles-list .tcl-row>[class^="tcl-col-"] {
   margin-bottom: 30px;
 }
 
@@ -186,7 +203,7 @@ const createdAt = computed(() => {
   padding: 0;
 }
 
-.article-item__title > a {
+.article-item__title>a {
   font-family: Muli, sans-serif;
   line-height: 1.33;
   display: block;
@@ -197,7 +214,7 @@ const createdAt = computed(() => {
 }
 
 @media screen and (min-width: 640px) {
-  .article-item__title > a {
+  .article-item__title>a {
     color: #edf2f7;
     font-size: 1.5rem;
     text-shadow: 1px 1px 2px #2d3748;
@@ -215,6 +232,11 @@ const createdAt = computed(() => {
   font-size: 0.875rem;
   margin: 0px 0px 1rem;
   flex: 1 1 auto;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .article-item__categories {
@@ -230,11 +252,11 @@ const createdAt = computed(() => {
   flex-wrap: wrap;
 }
 
-.article-item__categories > li {
+.article-item__categories>li {
   margin: 0px 0.5rem 0.5rem 0;
 }
 
-.article-item__categories > li:last-child {
+.article-item__categories>li:last-child {
   margin-right: 0;
 }
 
@@ -415,7 +437,7 @@ const createdAt = computed(() => {
   margin-top: 0;
 }
 
-.article-item.style-card .article-item__title > a {
+.article-item.style-card .article-item__title>a {
   color: #2d3748;
   font-size: 1.25rem;
   text-shadow: none;

@@ -1,3 +1,9 @@
+type CategoryItem = {
+    id: number
+    title: string
+    slug: string
+}
+
 export type ArticleItem = {
     id: number
     title: string
@@ -8,6 +14,9 @@ export type ArticleItem = {
         avatar: string
         fullName: string
     }
+    categories: CategoryItem[]
+    viewCount: number
+    description: string
     createdAt: Date
 }
 
@@ -24,4 +33,5 @@ export type ArticleItemApi = {
         nickname: string
     }
     date: string
+    categories: number[]
 }

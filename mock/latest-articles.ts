@@ -1,12 +1,7 @@
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 import type { ArticleItem } from "~/types";
 
-export default [1, 2, 3].map((number) => {
-
-  const now = new Date()
-  now.setMinutes(now.getMinutes() - 5)
-//   now.setSeconds(now.getSeconds() - 40)
-  
+export const generateArticle = (): ArticleItem => {
   const item: ArticleItem = {
     id: faker.number.int({ min: 10000, max: 50000 }),
     title: faker.lorem.sentence(5),
@@ -17,9 +12,36 @@ export default [1, 2, 3].map((number) => {
       avatar: faker.image.avatar(),
       fullName: faker.person.fullName(),
     },
-    createdAt:
-      number === 3 ? now : faker.date.past({ years: Math.random() }),
+    categories: [
+      {
+        title: faker.lorem.sentence(1),
+        slug: "react-la-gi",
+        id: faker.number.int({ min: 10000, max: 50000 }),
+      },
+      {
+        title: faker.lorem.sentence(1),
+        slug: "react-la-gi",
+        id: faker.number.int({ min: 10000, max: 50000 }),
+      },
+    ],
+    viewCount: faker.number.int({ min: 100, max: 500 }),
+    description: faker.lorem.sentence(15),
+    createdAt: faker.date.past({ years: Math.random() }),
   };
+
+  return item;
+};
+
+export default [1, 2, 3].map((number) => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - 5);
+  // now.setSeconds(now.getSeconds() - 40)
+
+  const item = generateArticle();
+
+  if (number === 3) {
+    item.createdAt = now;
+  }
 
   return item;
 });

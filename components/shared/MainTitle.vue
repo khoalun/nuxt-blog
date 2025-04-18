@@ -2,7 +2,8 @@
 
 <template>
   <div class="main-title spacing">
-    <h2><slot /></h2>
+    <h2><slot></slot></h2>
+    <slot name="action"></slot>
   </div>
 </template>
 
