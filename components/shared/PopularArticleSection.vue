@@ -9,6 +9,7 @@ import ArticleService from "~/services/article";
 
 const articles = ref<ArticleItem[]>(data.value || []);
 
+console.log('data', data)
 
 </script>
 

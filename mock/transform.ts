@@ -17,7 +17,7 @@ categories: CategoryItem[]
     },
     categories,
     viewCount: 0,
-    description: "",
+    description: articleApi.excerpt?.rendered.replace(/<[^>]*>/g, "") ?? "" ,
     createdAt: dayjs(articleApi.date).toDate(),
   };
 };
@@ -26,7 +26,7 @@ categories: CategoryItem[]
 export const transformCategoryData = (categoryApi: CategoryItemApi): CategoryItem => ({
     id: categoryApi.id,
     title: categoryApi.name,
-    slug: categoryApi.slug,
+    slug: `/${categoryApi.name}/${categoryApi.slug}`
 });
 
 

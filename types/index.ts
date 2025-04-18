@@ -39,6 +39,10 @@ export type ArticleItemApi = {
         avatar: string
         nickname: string
     }
+    excerpt: {
+        rendered: string
+        protected:false
+    }
     date: string
     categories: number[]
 }

@@ -55,8 +55,10 @@ const classes = computed(() => {
     <div class="article-item__content">
       <ul v-if="props.isShowCategories" class="article-item__categories">
         <li v-for="item in article.categories" :key="item.id">
-          <SharedButton :href="item.slug">{{ item.title }}
+          <NuxtLink :to="item.slug" class="text-blue-500 hover:underline">
+          <SharedButton :href="item.slug" >{{ item.title }}
           </SharedButton>
+         </NuxtLink>
         </li>
       </ul>
       <ul v-if="props.isShowCategories" class="article-item__stats">
