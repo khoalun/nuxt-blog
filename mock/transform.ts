@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import type { ArticleItem, ArticleItemApi } from "~/types";
-
+import type { CategoryItemApi, CategoryItem } from "~/types";
 export const trasnformArticleData = (
-  articleApi: ArticleItemApi
+articleApi: ArticleItemApi,
+categories: CategoryItem[]
 ): ArticleItem => {
   return {
     id: articleApi.id,
@@ -14,11 +15,19 @@ export const trasnformArticleData = (
       avatar: articleApi.author_data.avatar,
       fullName: articleApi.author_data.nickname,
     },
-    categories: [],
+    categories,
     viewCount: 0,
     description: "",
     createdAt: dayjs(articleApi.date).toDate(),
   };
 };
+
+
+export const transformCategoryData = (categoryApi: CategoryItemApi): CategoryItem => ({
+    id: categoryApi.id,
+    title: categoryApi.name,
+    slug: categoryApi.slug,
+});
+
 
 // slug" 'react/'

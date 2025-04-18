@@ -1,8 +1,15 @@
-type CategoryItem = {
+export type CategoryItem = {
     id: number
     title: string
     slug: string
 }
+
+
+export type CategoryItemApi = {
+    id: number;
+    name: string;
+    slug: string;
+  };
 
 export type ArticleItem = {
     id: number

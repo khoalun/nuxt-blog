@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import mockArticles from '@/mock/latest-articles'
-import type { ArticleItem } from "~/types";
+import type { ArticleItem  } from "~/types";
+import CategoryService from "~/services/category";
+import ArticleService from "~/services/article";
 
-// Goi Article
-// Goi Category
 
-const articles = ref<ArticleItem[]>(mockArticles);
+ const { data } = await useAsyncData(() => ArticleService.getPopular());
+
+const articles = ref<ArticleItem[]>(data.value || []);
 
 
 </script>
