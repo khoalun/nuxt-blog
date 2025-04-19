@@ -35,6 +35,8 @@ const createdAt = computed(() => {
   };
 });
 
+const { hashCategories } = await useCategories()
+
 const classes = computed(() => {
   return {
     "article-item": true,
@@ -42,6 +44,14 @@ const classes = computed(() => {
     "style-card": props.isCard,
   };
 });
+
+const categories = computed(() => {
+  if (!props.isShowCategories) return []
+  return article.value?.listCategoryIds.map((categoryId) => {
+    return hashCategories.value[categoryId]
+  })
+})
+
 </script>
 
 <template>
@@ -54,11 +64,11 @@ const classes = computed(() => {
     <!-- v-for="item in articles" :key="item.id" -->
     <div class="article-item__content">
       <ul v-if="props.isShowCategories" class="article-item__categories">
-        <li v-for="item in article.categories" :key="item.id">
+        <li v-for="item in categories" :key="item.id">
           <NuxtLink :to="item.slug" class="text-blue-500 hover:underline">
-          <SharedButton :href="item.slug" >{{ item.title }}
-          </SharedButton>
-         </NuxtLink>
+            <SharedButton :href="item.slug" variant="category">{{ item.title }}
+            </SharedButton>
+          </NuxtLink>
         </li>
       </ul>
       <ul v-if="props.isShowCategories" class="article-item__stats">

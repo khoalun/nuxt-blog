@@ -2,8 +2,7 @@ import dayjs from "dayjs";
 import type { ArticleItem, ArticleItemApi } from "~/types";
 import type { CategoryItemApi, CategoryItem } from "~/types";
 export const trasnformArticleData = (
-articleApi: ArticleItemApi,
-categories?: CategoryItem[]
+articleApi: ArticleItemApi
 ): ArticleItem => {
   return {
     id: articleApi.id,
@@ -15,8 +14,8 @@ categories?: CategoryItem[]
       avatar: articleApi.author_data.avatar,
       fullName: articleApi.author_data.nickname,
     },
-    categories: categories || [],
-    viewCount: 0,
+    listCategoryIds: articleApi.categories,
+    viewCount: articleApi.view_count,
     description: articleApi.excerpt?.rendered.replace(/<[^>]*>/g, "") ?? "" ,
     createdAt: dayjs(articleApi.date).toDate(),
   };
@@ -26,7 +25,7 @@ categories?: CategoryItem[]
 export const transformCategoryData = (categoryApi: CategoryItemApi): CategoryItem => ({
     id: categoryApi.id,
     title: categoryApi.name,
-    slug: `/${categoryApi.name}/${categoryApi.slug}`
+    slug: `/category/${categoryApi.slug}`
 });
 
 

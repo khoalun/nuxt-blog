@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import ArticleService from "~/services/article";
 import type { ArticleItem } from "~/types";
-const { data } = await useAsyncData(() => ArticleService.getLatest());
+import useCategories from "~/composables/useCategories"
 
+const { data } = await useAsyncData(() => ArticleService.getLatest());
 const articles = ref<ArticleItem[]>(data.value || []);
+
 </script>
 
 <template>

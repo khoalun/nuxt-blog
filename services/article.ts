@@ -38,36 +38,14 @@ const ArticleService = {
   },
   async getPopular() {
     try {
-      //   console.log("1. Truoc khi goi API", new Date());
-      // const [articles, categories] = await Promise.all([
-      //   ArticleService.getList({
-      //     page: 1,
-      //     per_page: 3,
-      //     orderby: "post_views",
-      //   }),
-      //   CategoryService.getList(),
-      // ]);
-      const categories = await CategoryService.getList();
       const articles = await ArticleService.getList({
         page: 1,
         per_page: 3,
         orderby: "post_views",
       });
 
-      //   console.log("2. Sau khi goi API", new Date());
+      const finalArticles: ArticleItem[] = articles.data.map(trasnformArticleData);
 
-      const finalArticles: ArticleItem[] = articles.data.map((articleApi) => {
-        const matchedCategories = categories.filter((cat) =>
-          articleApi.categories.includes(cat.id)
-        );
-
-        return trasnformArticleData(articleApi, matchedCategories);
-      });
-      //   console.log(
-      //     " all categories id:",
-      //     categories.map((c) => c.id)
-      //   );
-      //   console.log("finalAPI", finalArticles);
       return finalArticles;
     } catch (err) {
       console.log("failed to load articles", err);

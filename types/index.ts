@@ -21,7 +21,7 @@ export type ArticleItem = {
         avatar: string
         fullName: string
     }
-    categories: CategoryItem[]
+    listCategoryIds: number[]
     viewCount: number
     description: string
     createdAt: Date
@@ -45,4 +45,5 @@ export type ArticleItemApi = {
     }
     date: string
     categories: number[]
+    view_count: number
 }

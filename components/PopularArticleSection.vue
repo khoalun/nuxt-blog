@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import mockArticles from '@/mock/latest-articles'
 import type { ArticleItem } from "~/types";
-import CategoryService from "~/services/category";
 import ArticleService from "~/services/article";
-
 
 const { data } = await useAsyncData(() => ArticleService.getPopular(), {
     server: true
@@ -23,7 +20,7 @@ const articles = ref<ArticleItem[]>(data.value || []);
         <div class="tcl-container">
             <SharedMainTitle class="d-flex tcl-jc-between tcl-ais-center">
                 <template v-slot:default>
-                    Popular Articles {{ articles.length }}
+                    Popular Articles
                 </template>
                 <template v-slot:action>
                     <SharedButton>View more</SharedButton>

@@ -8,12 +8,7 @@ const { data } = await useAsyncData(() => ArticleService.getPopular());
 
 const articles = ref<ArticleItem[]>(data.value || []);
 
-console.log("data", data);
-
-
 const doubledArticles = articles.value.concat(articles.value);
-
-
 
 </script>
 
