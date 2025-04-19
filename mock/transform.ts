@@ -3,7 +3,7 @@ import type { ArticleItem, ArticleItemApi } from "~/types";
 import type { CategoryItemApi, CategoryItem } from "~/types";
 export const trasnformArticleData = (
 articleApi: ArticleItemApi,
-categories: CategoryItem[] 
+categories?: CategoryItem[]
 ): ArticleItem => {
   return {
     id: articleApi.id,
@@ -15,7 +15,7 @@ categories: CategoryItem[]
       avatar: articleApi.author_data.avatar,
       fullName: articleApi.author_data.nickname,
     },
-    categories,
+    categories: categories || [],
     viewCount: 0,
     description: articleApi.excerpt?.rendered.replace(/<[^>]*>/g, "") ?? "" ,
     createdAt: dayjs(articleApi.date).toDate(),

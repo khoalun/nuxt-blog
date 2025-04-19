@@ -11,6 +11,10 @@ const articles = ref<ArticleItem[]>(data.value || []);
 console.log("data", data);
 
 
+const doubledArticles = articles.value.concat(articles.value);
+
+
+
 </script>
 
 <template>
@@ -23,8 +27,8 @@ console.log("data", data);
         </template>
       </SharedMainTitle>
 
-      <div class="tcl-row">
-        <div
+      <div class="tcl-row ">
+        <!-- <div
           v-for="item in articles"
           :key="item.id"
           class="tcl-col-12 tcl-col-md-6"
@@ -36,7 +40,15 @@ console.log("data", data);
             :is-show-description="false"
             :is-show-avatar="false"
           />
-
+        </div> -->
+        <div v-for="item in doubledArticles" :key="item.id" class="tcl-col-12 tcl-col-md-6" >
+            <SharedArticleItem
+            :article="item"
+            :is-card="true"
+            :is-show-categories="false"
+            :is-show-description="false"
+            :is-show-avatar="false"
+          />
         </div>
       </div>
     </div>

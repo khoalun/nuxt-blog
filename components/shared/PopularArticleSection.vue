@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import mockArticles from '@/mock/latest-articles'
-import type { ArticleItem  } from "~/types";
+import type { ArticleItem } from "~/types";
 import CategoryService from "~/services/category";
 import ArticleService from "~/services/article";
 
 
- const { data } = await useAsyncData(() => ArticleService.getPopular());
+const { data } = await useAsyncData(() => ArticleService.getPopular(), {
+    server: true
+});
 
 const articles = ref<ArticleItem[]>(data.value || []);
 
-console.log('data', data)
+// watch(data, (newArticles) => {
+//     articles.value = newArticles || []
+// })
 
 </script>
 
@@ -19,7 +23,7 @@ console.log('data', data)
         <div class="tcl-container">
             <SharedMainTitle class="d-flex tcl-jc-between tcl-ais-center">
                 <template v-slot:default>
-                    Popular Articles
+                    Popular Articles {{ articles.length }}
                 </template>
                 <template v-slot:action>
                     <SharedButton>View more</SharedButton>
@@ -31,14 +35,14 @@ console.log('data', data)
                     <div class="popular-news__list--row">
                         <!-- Popular news card -->
                         <div class="popular-news__list--card">
-                            <SharedArticleItem :article="articles[0]" :is-show-categories="true"
+                            <SharedArticleItem :key="articles[0]?.id" :article="articles[0]" :is-show-categories="true"
                                 :is-show-description="true" :is-card="true" />
                         </div>
                         <!-- End Popular news card -->
 
                         <!-- Popular news card -->
                         <div class="popular-news__list--card">
-                            <SharedArticleItem :article="articles[1]" :is-show-categories="true"
+                            <SharedArticleItem :key="articles[1]?.id" :article="articles[1]" :is-show-categories="true"
                                 :is-show-description="true" :is-card="true" />
                         </div>
                         <!-- End Popular news card -->
@@ -48,7 +52,7 @@ console.log('data', data)
                     <div class="popular-news__list--row">
                         <!-- Popular news card -->
                         <div class="popular-news__list--card">
-                            <SharedArticleItem :article="articles[2]" :is-show-categories="true"
+                            <SharedArticleItem :key="articles[2]?.id" :article="articles[2]" :is-show-categories="true"
                                 :is-show-description="true" :is-card="true" :is-row="true" />
                         </div>
                         <!-- End Popular news card -->

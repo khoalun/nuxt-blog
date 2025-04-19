@@ -1,11 +1,12 @@
 import { api } from ".";
-import type { CategoryItemApi,CategoryItem } from "~/types"
-import { transformCategoryData } from "~/mock/transform"
+import type { CategoryItemApi, CategoryItem } from "~/types";
+import { transformCategoryData } from "~/mock/transform";
 
 const CategoryService = {
-  getList() {
+  async getList() {
     // Code fetch API -> transform data
-    return api
+
+    const result = await api
       .get<CategoryItemApi[]>("/wp/v2/categories", {
         params: {
           page: 1,
@@ -18,8 +19,9 @@ const CategoryService = {
       .catch((err) => {
         return [] as CategoryItem[];
       });
+    // await delay(3);
+    return result;
   },
 };
-
 
 export default CategoryService;
