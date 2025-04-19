@@ -37,7 +37,8 @@ const ArticleService = {
       
             return trasnformArticleData(articleApi, matchedCategories);
           });
-      
+          console.log(" all categories id:", categories.map((c) => c.id));
+          console.log('finalAPI', finalArticles )
           return finalArticles;
  
     } catch(err) {

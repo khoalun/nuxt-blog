@@ -3,7 +3,7 @@ import type { ArticleItem, ArticleItemApi } from "~/types";
 import type { CategoryItemApi, CategoryItem } from "~/types";
 export const trasnformArticleData = (
 articleApi: ArticleItemApi,
-categories: CategoryItem[]
+categories: CategoryItem[] 
 ): ArticleItem => {
   return {
     id: articleApi.id,
