@@ -11,7 +11,7 @@ type PostParams = {
 const ArticleService = {
   async getList({ page = 1, per_page = 10, orderby }: PostParams) {
     try {
-      const response = await api.get<ArticleItemApi[]>("/wp/v2/posts", {
+      const response = await api.call().get<ArticleItemApi[]>("/wp/v2/posts", {
         params: {
           page,
           per_page,

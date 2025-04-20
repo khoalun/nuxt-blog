@@ -4,8 +4,7 @@ import { transformCategoryData } from "~/mock/transform";
 
 const CategoryService = {
   async getList() {
-    const result = await api
-      .get<CategoryItemApi[]>("/wp/v2/categories", {
+    const result = await api.call().get<CategoryItemApi[]>("/wp/v2/categories", {
         params: {
           page: 1,
           per_page: 100,

@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import useUserInfo from "~/composables/useUserInfo";
+
+const userInfo = useUserInfo();
+</script>
+
 <template>
   <header id="header">
     <div class="tcl-container">
@@ -64,10 +70,19 @@
               </li>
             </ul>
             <ul class="header-nav__lists">
-              <li class="user">
-                <a href="login.html"
-                  ><i class="icons ion-person"></i> Tài khoản</a
+              <li class="user" v-if="!userInfo">
+                <NuxtLink href="/login"
+                  ><i class="icons ion-person"></i> Tài khoản</NuxtLink
                 >
+              </li>
+              <li class="user" v-if="userInfo">
+                <NuxtLink href="/profile" class="mb-0 !flex items-center gap-2">
+                  <img
+                    class="w-6 h-6 rounded-full"
+                    src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
+                  />
+                  {{ userInfo.nickname }}
+                </NuxtLink>
               </li>
             </ul>
           </div>
