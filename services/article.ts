@@ -20,7 +20,6 @@ const ArticleService = {
       });
       const articles = response.data.map(trasnformArticleData);
       const totalArticle = response.headers['x-wp-total']
-      await delay(1)
       return { articles, totalArticle, error: '' };
     } catch (err) {
       return { articles: [], totalArticle: 0, error: 'Something went wrong white fetching data, please try again!' };

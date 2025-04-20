@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useArticles } from "~/composables/useArticles";
 
-const { articles, loading, handleLoadMore, isAbleToLoadMore } = await useArticles();
+const { page, articles, loading, handleLoadMore, isAbleToLoadMore, totalPage, handleFetchArticleForPage } = await useArticles();
 
 </script>
 
@@ -22,10 +22,17 @@ const { articles, loading, handleLoadMore, isAbleToLoadMore } = await useArticle
         </div>
       </div>
 
-      <div class="text-center" v-if="isAbleToLoadMore">
-        <SharedButton :loading="loading" variant="primary" size="large" loadingPos="left" v-on:click="handleLoadMore">
-          Load More
+      <div class="text-center flex gap-1 items-center justify-center" v-if="isAbleToLoadMore">
+        <SharedButton :disabled="page <= 1" variant="category" v-on:click="() => handleFetchArticleForPage(page - 1)"><</SharedButton>
+        <SharedButton v-for="index in totalPage" :disabled="page === index"
+          :variant="page === index ? 'primary' : 'default'" v-on:click="() => handleFetchArticleForPage(index)">{{ index
+          }}
         </SharedButton>
+        <SharedButton :disabled="page >= totalPage" variant="category" v-on:click="() => handleFetchArticleForPage(page + 1)">></SharedButton>
+        <!-- 5 bai, 2 bai -> tong 3 trang -->
+        <!-- <SharedButton :loading="loading" variant="primary" size="large" loadingPos="left" v-on:click="handleLoadMore">
+          Load More
+        </SharedButton> -->
       </div>
     </div>
   </div>

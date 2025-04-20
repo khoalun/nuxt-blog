@@ -11,8 +11,13 @@ export const useArticles = async () => {
 
   const articles = ref<ArticleItem[]>(data.value?.articles || []);
   const page = ref(1);
+  const previousPage = ref(1);
   const totalArticle = ref(data.value?.totalArticle || 0);
   const loading = ref(false);
+
+  watch(page, (_, oldPage) => {
+    previousPage.value = oldPage
+  })
 
   const fetchArticles = async () => {
     try {
@@ -23,14 +28,16 @@ export const useArticles = async () => {
       });
 
       if (response.error) {
-        page.value--
+        // page.value--
+        page.value = previousPage.value
         setTimeout(() => {
           alert(response.error)
         }, 100);
         return
       }
 
-      articles.value = [...articles.value, ...response.articles];
+      // articles.value = [...articles.value, ...response.articles];
+      articles.value = response.articles
     } catch (err) {
       console.error(" Error loading articles:", err);
     } finally {
@@ -44,15 +51,28 @@ export const useArticles = async () => {
     fetchArticles()
   }
 
+  const handleFetchArticleForPage = (newPage: number) => {
+    if (page.value === newPage || loading.value) return
+    page.value = newPage
+    fetchArticles()
+  }
+
   const isAbleToLoadMore = computed(() => {
     return articles.value.length < totalArticle.value
+  })
+
+  const totalPage = computed(() => {
+    return Math.ceil(totalArticle.value / PER_PAGE)
+    // Math.floor
   })
 
   return {
     articles,
     page,
     loading,
+    totalPage,
     isAbleToLoadMore,
+    handleFetchArticleForPage,
     handleLoadMore
   };
 };

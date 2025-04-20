@@ -48,6 +48,9 @@ const classes = computed(() => {
   transition: all 250ms ease;
   border: 0;
 }
+.btn:disabled {
+  pointer-events: none;
+}
 .btn-default {
   color: #718096;
   background-color: #e2e8f0;
