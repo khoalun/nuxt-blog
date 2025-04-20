@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import PopularArticleSection from '~/components/PopularArticleSection.vue';
-import NewListSection from '~/components/NewListSection.vue'
+import GeneralArticleSection from '~/components/GeneralArticleSection.vue'
 </script>
 
 <template>
   <div>
     <LatestArticleSection />
     <PopularArticleSection/>
-    <NewListSection/>
+    <GeneralArticleSection/>
   </div>
 </template>

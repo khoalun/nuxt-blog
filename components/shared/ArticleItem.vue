@@ -46,8 +46,8 @@ const classes = computed(() => {
 });
 
 const categories = computed(() => {
-  if (!props.isShowCategories) return []
-  return article.value?.listCategoryIds.map((categoryId) => {
+  if (!props.isShowCategories || !Array.isArray(article.value?.listCategoryIds)) return []
+  return article.value.listCategoryIds.map((categoryId) => {
     return hashCategories.value[categoryId]
   })
 })
@@ -111,14 +111,6 @@ const categories = computed(() => {
 </template>
 
 <style scoped>
-.articles-list .tcl-row>[class^="tcl-col-"] {
-  margin-bottom: 30px;
-}
-
-.articles-list .tcl-row .article-item {
-  height: 100%;
-}
-
 .article-item {
   position: relative;
   box-shadow: rgba(1, 1, 1, 0.05) 1px 1px 5px 0px;
