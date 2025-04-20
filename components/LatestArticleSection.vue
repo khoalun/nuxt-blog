@@ -9,7 +9,7 @@ const articles = ref<ArticleItem[]>(data.value || []);
 </script>
 
 <template>
-  <div class="latest-news section">
+  <div class="latest-news section" v-if="articles.length">
     <div class="tcl-container">
       <SharedMainTitle>Bài Viết Mới Nhất</SharedMainTitle>
 

@@ -1,7 +1,6 @@
 import { trasnformArticleData } from "~/mock/transform";
-import { api } from ".";
+import { api, delay } from ".";
 import type { ArticleItem, ArticleItemApi } from "~/types";
-import CategoryService from "./category";
 
 type PostParams = {
   page?: number;
@@ -11,42 +10,39 @@ type PostParams = {
 
 const ArticleService = {
   async getList({ page = 1, per_page = 10, orderby }: PostParams) {
-    const result = await api.get<ArticleItemApi[]>("/wp/v2/posts", {
-      params: {
-        page,
-        per_page,
-        orderby,
-      },
-    });
-    // await delay(5);
-    return result;
+    try {
+      const response = await api.get<ArticleItemApi[]>("/wp/v2/posts", {
+        params: {
+          page,
+          per_page,
+          orderby,
+        },
+      });
+      const articles = response.data.map(trasnformArticleData);
+      const totalArticle = response.headers['x-wp-total']
+      await delay(1)
+      return { articles, totalArticle, error: '' };
+    } catch (err) {
+      return { articles: [], totalArticle: 0, error: 'Something went wrong white fetching data, please try again!' };
+    }
   },
-  async getLatest() {
+  getLatest() {
     return ArticleService.getList({
       page: 1,
       per_page: 3,
-    })
-      .then((response) => {
-        // return response.data.map((articleApi: ArticleItemApi) => {
-        //     return trasnformArticleData(articleApi)
-        // })
-        return response.data.map(trasnformArticleData);
-      })
-      .catch((err) => {
-        return [] as ArticleItem[];
-      });
+    }).then((response) => {
+      return response.articles;
+    });
   },
   async getPopular() {
     try {
-      const articles = await ArticleService.getList({
+      const response = await ArticleService.getList({
         page: 1,
         per_page: 3,
         orderby: "post_views",
       });
 
-      const finalArticles: ArticleItem[] = articles.data.map(trasnformArticleData);
-
-      return finalArticles;
+      return response.articles;
     } catch (err) {
       console.log("failed to load articles", err);
     }

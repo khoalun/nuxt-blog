@@ -16,7 +16,7 @@ const articles = ref<ArticleItem[]>(data.value || []);
 
 
 <template>
-    <div class="popular-news section bg-white-blue">
+    <div class="popular-news section bg-white-blue" v-if="articles.length">
         <div class="tcl-container">
             <SharedMainTitle class="d-flex tcl-jc-between tcl-ais-center">
                 <template v-slot:default>
