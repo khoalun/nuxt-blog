@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import AuthServices from "~/services/auth"
-import useUserInfo from "~/composables/useUserInfo"
+import AuthServices from "~/services/auth";
+import useUserInfo from "~/composables/useUserInfo";
+import { ToastRoot, ToastTitle, ToastDescription, ToastClose } from "reka-ui";
 
 type FormData = {
   username: string;
   password: string;
 };
 
+const toastOpen = ref(false);
 const formData = ref<FormData>({
   username: "khoa.bui",
   password: "Portal@123",
 });
-const loading = ref(false)
+const loading = ref(false);
 const formErrors = ref<FormData>({
   username: "",
   password: "",
 });
 
-const router = useRouter()
-const userInfo = useUserInfo()
+const router = useRouter();
+const userInfo = await useUserInfo();
 
 const validatePassword = () => {
   const newPassword = formData.value.password;
@@ -83,25 +85,28 @@ const isFormInValid = computed(() => {
 const handleLogin = async () => {
   if (isFormInValid.value || loading.value) return;
 
-  loading.value = true
-  const response = await AuthServices.login(formData.value)
+  loading.value = true;
+  const response = await AuthServices.login(formData.value);
 
   if (response.token) {
-    userInfo.value = await AuthServices.getUserInfo()
+    userInfo.value = await AuthServices.getUserInfo();
 
     if (userInfo.value) {
+      // setTimeout(() => {
+      //   alert("Dang nhap thanh cong!");
+      // }, 100);
+      toastOpen.value = true;
       setTimeout(() => {
-        alert('Dang nhap thanh cong!')
-      }, 100)
-      router.push('/')
+        router.push("/");
+      }, 1500);
     }
   } else {
     setTimeout(() => {
-      alert(response.error)
-    }, 100)
+      alert(response.error);
+    }, 100);
   }
 
-  loading.value = false
+  loading.value = false;
 };
 </script>
 
@@ -145,8 +150,16 @@ const handleLogin = async () => {
         </div>
       </div>
     </div>
+
     <div class="spacing"></div>
   </main>
+
+  <ToastRoot v-if="toastOpen" v-model:open="toastOpen" :duration="5000">
+      <ToastTitle>Đăng nhập thành công</ToastTitle>
+      <ToastDescription>Chào mừng trở lại!</ToastDescription>
+      <ToastClose />
+  </ToastRoot>
+  
 </template>
 
 <style>

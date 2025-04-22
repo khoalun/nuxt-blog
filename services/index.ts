@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { COOKIE_TOKEN_NAME } from "./auth";
 
 export const api = {
   call() {
@@ -7,11 +8,12 @@ export const api = {
       baseURL: "http://localhost/wp-api/wp-json",
     });
   },
-  callWithToken() {
+  callWithToken(tokenSsr?: string) {
+    const tokenCsr = Cookies.get(COOKIE_TOKEN_NAME)
     return axios.create({
       baseURL: "http://localhost/wp-api/wp-json",
       headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
+        Authorization: `Bearer ${tokenSsr || tokenCsr}`,
       },
     });
   },

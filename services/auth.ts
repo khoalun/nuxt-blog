@@ -1,4 +1,4 @@
-import { api } from ".";
+import { api, delay } from ".";
 import Cookies from "js-cookie";
 
 type LoginParams = {
@@ -6,12 +6,15 @@ type LoginParams = {
   password: string;
 };
 
+export const COOKIE_TOKEN_NAME = 'tk'
+
 const parseJwt = (token: string = '') => {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
   const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
+  console.log('Token nhan duoc 15', token)
 
   return JSON.parse(jsonPayload);
 }
@@ -25,7 +28,7 @@ const AuthServices = {
       });
 
       if (response.data.token) {
-        Cookies.set("token", response.data.token, { expires: 7 });
+        Cookies.set(COOKIE_TOKEN_NAME, response.data.token, { expires: 7 });
         return {
           token: response.data.token,
           error: "",
@@ -40,19 +43,25 @@ const AuthServices = {
       };
     }
   },
-  async getUserInfo() {
+  async getUserInfo(tokenSsr?: string) {
     try {
-      const payload = parseJwt(Cookies.get("token"));
-      if (!payload?.data.user?.id) return null
+      const tokenCsr = Cookies.get(COOKIE_TOKEN_NAME)
+      const token = tokenSsr || tokenCsr 
+      const payload = parseJwt(token);
 
-      const response = await api.callWithToken().get("/wp/v2/users/me");
+      if (!payload?.data.user?.id) {
+        return null
+      }
 
+      const response = await api.callWithToken(token).get("/wp/v2/users/me");
+      // await delay(1)
       if (response.data.id) {
         return response.data // Transform format data
       }
 
       throw new Error()
-    } catch (err) {
+    } catch (err: any) {
+      Cookies.remove(COOKIE_TOKEN_NAME) // Chi chay client side
       return null;
     }
   },
@@ -62,3 +71,6 @@ export default AuthServices;
 
 // token=
 // token=fhsdjkfhskfhkfd -> co gia tri
+// user.name -> read property name of user
+// obj.key -> read proterty key of obj
+// undefined.replace -> read property replace of undefined | Cannot read properties of undefined (reading 'replace')
