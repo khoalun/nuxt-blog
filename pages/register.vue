@@ -15,10 +15,10 @@ const loading = ref(false);
 const router = useRouter();
 
 const formData = ref<FormData>({
-  username: "khoa.bui",
-  email: "khoa.bui@gmail.com",
-  password: "Portal@123",
-  confirmPassword: "Portal@123",
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
 });
 
 const formErrors = ref<FormData>({

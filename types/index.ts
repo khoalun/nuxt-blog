@@ -1,3 +1,8 @@
+import type { FormData as FormLoginData } from "~/pages/login.vue";
+import type { FormData as FormRegisterData } from "~/pages/register.vue";
+
+export type FormUserData = FormLoginData | FormRegisterData
+
 export type CategoryItem = {
     id: number
     title: string

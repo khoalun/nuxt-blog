@@ -8,8 +8,8 @@ export type FormData = {
 };
 
 const formData = ref<FormData>({
-  username: "khoa.bui",
-  password: "Portal@123",
+  username: "",
+  password: "",
 });
 const loading = ref(false);
 const formErrors = ref<FormData>({

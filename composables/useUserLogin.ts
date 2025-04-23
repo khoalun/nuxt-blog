@@ -1,9 +1,6 @@
 import AuthServices from "~/services/auth";
 import useUserInfo from "~/composables/useUserInfo";
-import type { FormData as FormLoginData } from "~/pages/login.vue";
-import type { FormData as FormRegisterData } from "~/pages/register.vue";
-
-type FormData = FormLoginData | FormRegisterData
+import type { FormUserData } from '~/types'
 
 const useUserLogin = async () => {
   const router = useRouter();
@@ -15,7 +12,7 @@ const useUserLogin = async () => {
     }
   });
 
-  const login = async (formData: Ref<FormData>) => {
+  const login = async (formData: Ref<FormUserData>) => {
     const response = await AuthServices.login(formData.value);
 
     if (response.token) {

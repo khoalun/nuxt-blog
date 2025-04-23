@@ -1,9 +1,6 @@
-import type { FormData as FormLoginData } from "~/pages/login.vue";
-import type { FormData as FormRegisterData } from "~/pages/register.vue";
+import type { FormUserData } from "~/types";
 
-type FormData = FormLoginData | FormRegisterData
-
-const useFormLogic = (formData: Ref<FormData>, formErrors: Ref<FormData>) => {
+const useFormLogic = (formData: Ref<FormUserData>, formErrors: Ref<FormUserData>) => {
   const validatePassword = () => {
     const newPassword = formData.value.password;
   
@@ -48,7 +45,7 @@ const useFormLogic = (formData: Ref<FormData>, formErrors: Ref<FormData>) => {
   };
 
   const isFormInValid = computed(() => {
-    const listKeys = Object.keys(formData.value) as (keyof FormData)[];
+    const listKeys = Object.keys(formData.value) as (keyof FormUserData)[];
     for (let index = 0; index < listKeys.length; index++) {
       const key = listKeys[index];
       const value = formData.value[key];
