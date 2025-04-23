@@ -2,13 +2,14 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['reka-ui/nuxt'],
+  modules: ['@nuxt/ui'],
   css: [
     '~/assets/css/bootstrap-tcl.css',
     '~/assets/css/main.css',
     '~/assets/css/header.css',
     '~/assets/css/footer.css',
     '~/assets/main.css',
+
   ],
   postcss: {
     plugins: {
@@ -25,5 +26,5 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' },
       ]
     },
-  }
+  },
 })

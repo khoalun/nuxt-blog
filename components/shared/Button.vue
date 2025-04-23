@@ -23,14 +23,14 @@ const classes = computed(() => {
 
 <template>
   <NuxtLink v-if="props.as === 'a'" v-bind:class="classes">
-    <SharedIconLoading v-if="loading && position === 'left'" />
+    <SharedIconLoading class="inline-block" v-if="loading && position === 'left'" />
     <slot></slot>
-    <SharedIconLoading v-if="loading && position === 'right'" />
+    <SharedIconLoading class="inline-block" v-if="loading && position === 'right'" />
   </NuxtLink>
   <button v-else v-bind:class="classes">
-    <SharedIconLoading v-if="loading && position === 'left'" />
+    <SharedIconLoading class="inline-block" v-if="loading && position === 'left'" />
     <slot></slot>
-    <SharedIconLoading v-if="loading && position === 'right'" />
+    <SharedIconLoading class="inline-block" v-if="loading && position === 'right'" />
   </button>
 </template>
 

@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import AuthServices from "~/services/auth";
-import useUserInfo from "~/composables/useUserInfo";
-import { ToastRoot, ToastTitle, ToastDescription, ToastClose } from "reka-ui";
+import userUserLogin from "~/composables/useUserLogin";
+import { getToastOpts } from "~/helpers";
 
-type FormData = {
+export type FormData = {
   username: string;
   password: string;
 };
 
-const toastOpen = ref(false);
 const formData = ref<FormData>({
   username: "khoa.bui",
   password: "Portal@123",
@@ -20,86 +18,26 @@ const formErrors = ref<FormData>({
 });
 
 const router = useRouter();
-const userInfo = await useUserInfo();
 
-const validatePassword = () => {
-  const newPassword = formData.value.password;
+const { login } = await userUserLogin();
+const toast = useToast();
 
-  if (!newPassword) {
-    formErrors.value.password = "Vui lòng nhập mật khẩu!";
-    return;
-  }
-
-  if (newPassword.length < 5) {
-    formErrors.value.password = "Mật khẩu phải có ít nhất 5 ký tự!";
-    return;
-  }
-
-  const hasUpperCase = /[A-Z]/.test(newPassword);
-  const hasLowerCase = /[a-z]/.test(newPassword);
-  const hasNumbers = /[0-9]/.test(newPassword);
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
-
-  const errors = [];
-
-  if (!hasUpperCase) errors.push("chữ hoa");
-  if (!hasLowerCase) errors.push("chữ thường");
-  if (!hasNumbers) errors.push("số");
-  if (!hasSpecialChar) errors.push("ký tự đặc biệt");
-
-  if (errors.length > 0) {
-    formErrors.value.password = `Mật khẩu phải chứa ít nhất một ${errors.join(
-      ", "
-    )}!`;
-    return;
-  }
-  formErrors.value.password = "";
-};
-
-const validateUsername = () => {
-  if (!formData.value.username) {
-    formErrors.value.username = "Vui lòng nhập username!";
-    return;
-  }
-
-  formErrors.value.username = "";
-};
-
-const isFormInValid = computed(() => {
-  const listKeys = Object.keys(formData.value) as (keyof FormData)[];
-  for (let index = 0; index < listKeys.length; index++) {
-    const key = listKeys[index];
-    const value = formData.value[key];
-    const error = formErrors.value[key];
-
-    const isInvalid = error || (!value && !error);
-
-    if (isInvalid) {
-      console.log("Ton tai mot field co key", key, " la sai");
-      return true;
-    }
-  }
-  return false;
-});
+const { validateUsername, validatePassword, isFormInValid } = useFormLogic(
+  formData,
+  formErrors
+);
 
 const handleLogin = async () => {
   if (isFormInValid.value || loading.value) return;
 
   loading.value = true;
-  const response = await AuthServices.login(formData.value);
+  const response = await login(formData);
 
-  if (response.token) {
-    userInfo.value = await AuthServices.getUserInfo();
-
-    if (userInfo.value) {
-      // setTimeout(() => {
-      //   alert("Dang nhap thanh cong!");
-      // }, 100);
-      toastOpen.value = true;
-      setTimeout(() => {
-        router.push("/");
-      }, 1500);
-    }
+  if (!response.error) {
+    toast.add(getToastOpts({ description: "Login succesfully!! :))" }));
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
   } else {
     setTimeout(() => {
       alert(response.error);
@@ -117,7 +55,6 @@ const handleLogin = async () => {
       <div class="tcl-row">
         <div class="tcl-col-12 tcl-col-sm-6 block-center">
           <h1 class="form-title text-center">Login</h1>
-          <h1 v-if="userInfo">Login thanh cong{{ userInfo.id }}</h1>
           <div class="form-login-register">
             <form v-on:submit.prevent="handleLogin">
               <SharedInput
@@ -141,8 +78,8 @@ const handleLogin = async () => {
                   size="large"
                   :loading="loading"
                   :disabled="isFormInValid"
-                  >Dang Nhap</SharedButton
-                >
+                  >Dang Nhap
+                </SharedButton>
                 <NuxtLink href="/register">Dang Ky</NuxtLink>
               </div>
             </form>
@@ -153,13 +90,6 @@ const handleLogin = async () => {
 
     <div class="spacing"></div>
   </main>
-
-  <ToastRoot v-if="toastOpen" v-model:open="toastOpen" :duration="5000">
-      <ToastTitle>Đăng nhập thành công</ToastTitle>
-      <ToastDescription>Chào mừng trở lại!</ToastDescription>
-      <ToastClose />
-  </ToastRoot>
-  
 </template>
 
 <style>
@@ -175,6 +105,7 @@ const handleLogin = async () => {
   position: relative;
   margin-bottom: 1.25rem;
 }
+
 .form-control input {
   box-sizing: border-box;
   margin: 0;
@@ -195,6 +126,7 @@ const handleLogin = async () => {
   background-color: #edf2f7;
   outline: none;
 }
+
 .form-control .toggle-password {
   right: 0;
   bottom: 0;
@@ -203,9 +135,11 @@ const handleLogin = async () => {
   cursor: pointer;
   position: absolute;
 }
+
 .form-control .toggle-password:hover {
   color: #5a67d8;
 }
+
 .form-control .toggle-password + input {
   padding-right: 3rem;
 }
@@ -222,6 +156,7 @@ const handleLogin = async () => {
   margin: 0px 0px 1.5rem;
   text-decoration: none;
 }
+
 @media screen and (min-width: 640px) {
   .form-title {
     font-size: 2.25rem;
