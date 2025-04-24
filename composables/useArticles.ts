@@ -45,6 +45,20 @@ export const useArticles = async () => {
     }
   };
 
+
+  const handleSearch =  async (keyword: string) => {
+    try {
+      loading.value=true;
+      const res = await ArticleService.getSearch(keyword)
+      console.log('res', res)
+    }
+    catch (err : any ) {
+      console.error("Error searching articles:", err.message );
+    } finally {
+      loading.value= false;
+    }
+  }
+
   const handleLoadMore = () => {
     if (loading.value) return
     page.value++;
@@ -73,6 +87,7 @@ export const useArticles = async () => {
     totalPage,
     isAbleToLoadMore,
     handleFetchArticleForPage,
-    handleLoadMore
+    handleLoadMore,
+    handleSearch
   };
 };

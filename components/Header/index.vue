@@ -12,6 +12,25 @@ const logout = () => {
   userInfo.value = null;
   router.push("/");
 };
+
+const searchQuery = ref('')
+const { handleSearch } = await useArticles();
+
+// const emit = defineEmits<{
+//   (e: 'search', keyword: string): void
+// }>()
+
+
+const onSearch = async () => {
+  if (!searchQuery.value.trim()) return;
+  try {
+    await  handleSearch(searchQuery.value);
+  } catch (error) {
+    console.error('Search error:', error);
+  }
+}
+
+
 </script>
 
 <template>
@@ -24,7 +43,7 @@ const logout = () => {
         </div>
         <div class="tcl-col-4">
           <!-- Header Search -->
-          <form action="/search.html" method="get">
+          <form action="/search.html" method="get" @submit.prevent="onSearch">
             <div class="header-search">
               <svg
                 stroke="currentColor"
@@ -42,6 +61,8 @@ const logout = () => {
               </svg>
               <input
                 class="header-search__input"
+                v-model="searchQuery"
+                @keyup.enter="onSearch"
                 type="text"
                 placeholder="Search articles here ..."
                 aria-label="Search"
@@ -116,3 +137,4 @@ const logout = () => {
     </div>
   </header>
 </template>
+

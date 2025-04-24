@@ -6,16 +6,18 @@ type PostParams = {
   page?: number;
   per_page?: number;
   orderby?: string;
+  search? : string;
 };
 
 const ArticleService = {
-  async getList({ page = 1, per_page = 10, orderby }: PostParams) {
+  async getList({ page = 1, per_page = 10, orderby ,search }: PostParams) {
     try {
       const response = await api.call().get<ArticleItemApi[]>("/wp/v2/posts", {
         params: {
           page,
           per_page,
           orderby,
+          search,
         },
       });
       const articles = response.data.map(trasnformArticleData);
@@ -46,6 +48,14 @@ const ArticleService = {
       console.log("failed to load articles", err);
     }
   },
+
+  async getSearch(searchQuery: string ) {
+     return this.getList({
+      search: searchQuery,
+      per_page: 3,
+      page: 1
+    });
+  } 
 };
 
 export default ArticleService;
