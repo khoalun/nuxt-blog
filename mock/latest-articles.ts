@@ -12,18 +12,19 @@ export const generateArticle = (): ArticleItem => {
       avatar: faker.image.avatar(),
       fullName: faker.person.fullName(),
     },
-    categories: [
-      {
-        title: faker.lorem.sentence(1),
-        slug: "react-la-gi",
-        id: faker.number.int({ min: 10000, max: 50000 }),
-      },
-      {
-        title: faker.lorem.sentence(1),
-        slug: "react-la-gi",
-        id: faker.number.int({ min: 10000, max: 50000 }),
-      },
-    ],
+    listCategoryIds: [],
+    // categories: [
+    //   {
+    //     title: faker.lorem.sentence(1),
+    //     slug: "react-la-gi",
+    //     id: faker.number.int({ min: 10000, max: 50000 }),
+    //   },
+    //   {
+    //     title: faker.lorem.sentence(1),
+    //     slug: "react-la-gi",
+    //     id: faker.number.int({ min: 10000, max: 50000 }),
+    //   },
+    // ],
     viewCount: faker.number.int({ min: 100, max: 500 }),
     description: faker.lorem.sentence(15),
     createdAt: faker.date.past({ years: Math.random() }),

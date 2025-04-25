@@ -24,7 +24,6 @@ const parseJwt = (token: string = "") => {
       })
       .join("")
   );
-  console.log("Token nhan duoc 15", token);
 
   return JSON.parse(jsonPayload);
 };

@@ -14,13 +14,17 @@ type Props = {
   isShowAvatar?: boolean
   isShowCategories?: boolean
   isShowDescription?: boolean
+  isShowCountView?: boolean
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  isShowAvatar: true
+  isShowAvatar: true,
+  isShowCountView: true
 });
 const article = toRef(props.article);
 const isShowAvatar = toRef(props.isShowAvatar ?? true)
+
+const isShowCountView = toRef(props.isShowCountView ?? true)
 
 const createdAt = computed(() => {
   if (!article.value)
@@ -73,8 +77,8 @@ const categories = computed(() => {
       </ul>
       <ul v-if="props.isShowCategories" class="article-item__stats">
         <li>
-          <i class="icons ion-ios-eye"></i>
-          <span class="text">{{ article.viewCount }}</span>
+          <i  v-if="isShowCountView" class="icons ion-ios-eye"></i>
+          <span class="text" v-if="isShowCountView">{{ article.viewCount }}</span>
         </li>
       </ul>
       <h2 class="article-item__title">

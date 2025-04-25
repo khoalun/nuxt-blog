@@ -1,6 +1,7 @@
 import { trasnformArticleData } from "~/mock/transform";
 import { api, delay } from ".";
 import type { ArticleItem, ArticleItemApi } from "~/types";
+import mockArticles from '~/mock/articles'
 
 type PostParams = {
   page?: number;
@@ -20,6 +21,10 @@ const ArticleService = {
           search,
         },
       });
+      // return {
+      //   articles: mockArticles,
+      //   totalArticle: 1000
+      // }
       const articles = response.data.map(trasnformArticleData);
       const totalArticle = response.headers['x-wp-total']
       return { articles, totalArticle, error: '' };

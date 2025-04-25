@@ -4,7 +4,9 @@ import Cookies from "js-cookie";
 import { COOKIE_TOKEN_NAME } from "~/services/auth";
 import { useRouter } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
+const searchQuery = ref<string>(String(route.query.q || ''));
 const userInfo = await useUserInfo();
 
 const logout = () => {
@@ -13,24 +15,11 @@ const logout = () => {
   router.push("/");
 };
 
-const searchQuery = ref('')
-const { handleSearch } = await useArticles();
-
-// const emit = defineEmits<{
-//   (e: 'search', keyword: string): void
-// }>()
-
-
 const onSearch = async () => {
   if (!searchQuery.value.trim()) return;
-  try {
-    await  handleSearch(searchQuery.value);
-  } catch (error) {
-    console.error('Search error:', error);
-  }
-}
 
-
+  router.push(`/search?q=${searchQuery.value}`);
+};
 </script>
 
 <template>
@@ -43,7 +32,7 @@ const onSearch = async () => {
         </div>
         <div class="tcl-col-4">
           <!-- Header Search -->
-          <form action="/search.html" method="get" @submit.prevent="onSearch">
+          <form @submit.prevent="onSearch">
             <div class="header-search">
               <svg
                 stroke="currentColor"
@@ -137,4 +126,3 @@ const onSearch = async () => {
     </div>
   </header>
 </template>
-
