@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 import type { ArticleItem } from "~/types";
 
-export const generateArticle = (): ArticleItem => {
+export const generateArticle = (index?: number): ArticleItem => {
   const item: ArticleItem = {
     id: faker.number.int({ min: 10000, max: 50000 }),
-    title: faker.lorem.sentence(5),
+    title: typeof index !== 'undefined' ? `${index + 1} ${faker.lorem.sentence(5)}` : faker.lorem.sentence(5),
     thumbnail: faker.image.url({ width: 348, height: 452 }),
     slug: faker.internet.url(), // article.slug
     author: {

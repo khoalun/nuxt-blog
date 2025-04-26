@@ -7,11 +7,11 @@ type PostParams = {
   page?: number;
   per_page?: number;
   orderby?: string;
-  search? : string;
+  search?: string;
 };
 
 const ArticleService = {
-  async getList({ page = 1, per_page = 10, orderby ,search }: PostParams) {
+  async getList({ page = 1, per_page = 10, orderby, search }: PostParams) {
     try {
       const response = await api.call().get<ArticleItemApi[]>("/wp/v2/posts", {
         params: {
@@ -21,10 +21,10 @@ const ArticleService = {
           search,
         },
       });
-      // return {
-      //   articles: mockArticles,
-      //   totalArticle: 1000
-      // }
+      return {
+        articles: mockArticles,
+        totalArticle: mockArticles.length
+      }
       const articles = response.data.map(trasnformArticleData);
       const totalArticle = response.headers['x-wp-total']
       return { articles, totalArticle, error: '' };
@@ -54,13 +54,7 @@ const ArticleService = {
     }
   },
 
-  async getSearch(searchQuery: string ) {
-     return this.getList({
-      search: searchQuery,
-      per_page: 3,
-      page: 1
-    });
-  } 
+
 };
 
 export default ArticleService;
