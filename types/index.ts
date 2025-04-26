@@ -52,3 +52,18 @@ export type ArticleItemApi = {
     categories: number[]
     view_count: number
 }
+
+
+export type MenuItemApi = {
+    ID: number
+    title: string
+    url: string
+    child_items?: MenuItemApi[]
+}
+
+export type MenuItem = {
+   id: number
+   label: string
+   slug: string
+   items: MenuItem[]
+}

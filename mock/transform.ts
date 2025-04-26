@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import type { ArticleItem, ArticleItemApi } from "~/types";
+import type { ArticleItem, ArticleItemApi, MenuItem, MenuItemApi } from "~/types";
 import type { CategoryItemApi, CategoryItem } from "~/types";
 export const trasnformArticleData = (
 articleApi: ArticleItemApi
@@ -29,4 +29,9 @@ export const transformCategoryData = (categoryApi: CategoryItemApi): CategoryIte
 });
 
 
-// slug" 'react/'
+export const transformMenuData = (menuApi: MenuItemApi) : MenuItem => ({
+  id: menuApi.ID,
+  label: menuApi.title,
+  slug: menuApi.url,
+  items: menuApi.child_items?.map(transformMenuData) || []
+})

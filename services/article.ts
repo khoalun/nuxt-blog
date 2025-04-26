@@ -1,7 +1,7 @@
 import { trasnformArticleData } from "~/mock/transform";
 import { api, delay } from ".";
-import type { ArticleItem, ArticleItemApi } from "~/types";
-import mockArticles from '~/mock/articles'
+import type { ArticleItemApi } from "~/types";
+// import mockArticles from '~/mock/articles'
 
 type PostParams = {
   page?: number;
@@ -21,11 +21,12 @@ const ArticleService = {
           search,
         },
       });
-      return {
-        articles: mockArticles,
-        totalArticle: mockArticles.length
-      }
+      // return {
+      //   articles: mockArticles,
+      //   totalArticle: mockArticles.length
+      // }
       const articles = response.data.map(trasnformArticleData);
+      console.log('articles', response.data)
       const totalArticle = response.headers['x-wp-total']
       return { articles, totalArticle, error: '' };
     } catch (err) {
